@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>ความทรงจำของเรา 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Itim&family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+body{
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+    background:linear-gradient(135deg,#ffe6f0,#ffd1dc);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    overflow:hidden;
+}
+
+/* ===== หัวใจลอย ===== */
+.heart{
+    position:fixed;
+    color:#ff6f91;
+    animation:float 8s linear infinite;
+    opacity:0.7;
+}
+
+@keyframes float{
+    0%{transform:translateY(100vh) scale(0.8);opacity:0;}
+    20%{opacity:1;}
+    100%{transform:translateY(-10vh) scale(1.1);opacity:0;}
+}
+
+/* ===== กล่องหลัก ===== */
+.card{
+    background:white;
+    padding:20px;
+    border-radius:36px;
+    width:800px;
+    box-shadow:0 22px 50px rgba(255,77,109,0.35);
+    z-index:2;
+}
+
+/* ===== หัวข้อ ===== */
+.title{
+    text-align:center;
+    font-family:'Pacifico',cursive;
+    font-size:2rem;
+    color:#ff4d6d;
+    margin-bottom:6px;
+}
+
+.subtitle{
+    text-align:center;
+    font-family:'Itim',cursive;
+    color:#ff8fab;
+    margin-bottom:18px;
+    font-size:0.95rem;
+}
+
+/* ===== รูป ===== */
+.gallery{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.gallery img{
+    width:100%;
+    height:135px;
+    object-fit:cover;
+    border-radius:18px;
+    box-shadow:0 8px 18px rgba(0,0,0,0.2);
+    transition:0.35s;
+}
+
+.gallery img:hover{
+    transform:scale(1.05);
+}
+
+/* ===== กล่องเพลง ===== */
+.music-box{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    background:linear-gradient(135deg,#fff0f5,#ffe6f0);
+    padding:14px;
+    border-radius:26px;
+    box-shadow:inset 0 0 12px rgba(255,105,135,0.25);
+}
+
+.music-cover{
+    width:95px;
+    height:95px;
+    border-radius:20px;
+    object-fit:cover;
+    box-shadow:0 8px 16px rgba(0,0,0,0.25);
+}
+
+.music-controls{
+    flex:1;
+}
+
+.music-controls h3{
+    margin:0 0 6px;
+    font-family:'Itim',cursive;
+    color:#ff4d6d;
+    font-size:1rem;
+}
+
+.music-btn{
+    padding:7px 24px;
+    font-size:0.9rem;
+    border:none;
+    border-radius:22px;
+    background:linear-gradient(135deg,#ff6f91,#ff4d6d);
+    color:white;
+    cursor:pointer;
+    box-shadow:0 4px 12px rgba(255,77,109,0.45);
+}
+
+.music-time{
+    margin-top:6px;
+    color:#ff6f91;
+    font-size:0.85rem;
+}
+
+.volume{
+    margin-top:6px;
+}
+
+.volume input{
+    width:100%;
+}
+</style>
+</head>
+
+<body>
+
+<!-- YouTube -->
+<iframe id="music"
+    width="0" height="0"
+    src="https://www.youtube.com/embed/dCEvQ69aGYs?enablejsapi=1&loop=1&playlist=dCEvQ69aGYs"
+    frameborder="0"
+    allow="autoplay">
+</iframe>
+
+<script>
+for(let i=0;i<24;i++){
+    let heart=document.createElement("div");
+    heart.className="heart";
+    heart.innerHTML="💖";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.animationDuration=(5+Math.random()*5)+"s";
+    heart.style.fontSize=(14+Math.random()*18)+"px";
+    document.body.appendChild(heart);
+}
+</script>
+
+<div class="card">
+
+    <div class="title">ความทรงจำของนายเก้าและหนูแหวนสุดสวยย 💕</div>
+    <div class="subtitle">ทุกช่วงเวลาที่มีเธอ คือความสุขของเค้า 💗</div>
+
+    <div class="gallery">
+        <img src="img1.jpg">
+        <img src="img2.jpg">
+        <img src="img3.jpg">
+        <img src="img4.jpg">
+        <img src="img5.jpg">
+        <img src="img6.jpg">
+        <img src="img7.jpg">
+        <img src="img8.jpg">
+        <img src="img9.jpg">
+    </div>
+
+    <!-- กล่องเพลง (หน้า 4 เฉพาะกล่องเพลงตามที่ขอ) -->
+    <div class="music-box">
+        <!-- 🔥 รูปปกเพลงใหม่ -->
+        <img src="new-cover.jpg" class="music-cover">
+
+        <div class="music-controls">
+            <h3>เพลงของเรา 💞</h3>
+            <button class="music-btn" onclick="toggleMusic()">▶ เล่นเพลง</button>
+            <div class="music-time">เวลาเล่น: <span id="playTime">00:00</span></div>
+            <div class="volume">
+                🔊 ระดับเสียง
+                <input type="range" min="0" max="100" value="50" oninput="setVolume(this.value)">
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+let playing=false;
+let playSeconds=0;
+let timer=null;
+
+function toggleMusic(){
+    const iframe=document.getElementById("music").contentWindow;
+    const btn=document.querySelector(".music-btn");
+
+    if(!playing){
+        iframe.postMessage('{"event":"command","func":"playVideo","args":""}','*');
+        btn.innerText="⏸ หยุดเพลง";
+        playing=true;
+        timer=setInterval(()=>{ playSeconds++; updateTime(); },1000);
+    }else{
+        iframe.postMessage('{"event":"command","func":"pauseVideo","args":""}','*');
+        btn.innerText="▶ เล่นเพลง";
+        playing=false;
+        clearInterval(timer);
+    }
+}
+
+function updateTime(){
+    let m=String(Math.floor(playSeconds/60)).padStart(2,"0");
+    let s=String(playSeconds%60).padStart(2,"0");
+    document.getElementById("playTime").innerText=`${m}:${s}`;
+}
+
+function setVolume(v){
+    const iframe=document.getElementById("music").contentWindow;
+    iframe.postMessage(
+        `{"event":"command","func":"setVolume","args":[${v}]}`,
+        '*'
+    );
+}
+</script>
+
+</body>
+</html>
